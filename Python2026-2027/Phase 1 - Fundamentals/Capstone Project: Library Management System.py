@@ -61,8 +61,8 @@ def search_by_title():
             if books_list[i]["book_title"] == title_input:
                 view_all_books(title_input)
                 flag = flag + 1
-            if flag > 1:
-                print("Book Not Found")
+        if flag < 1:
+            print("Book Not Found")
     elif choice == 2:
         genre_input = input("Enter Genre Of Book To Find/Search => ")
         genre_input = detail_formatter(genre_input)
@@ -98,37 +98,45 @@ def view_all_members():
         print(f"Member Borrowed Books => {members_list[i]['member_borrowed_books']}")
 
 def member_id_check(member_id):
+    flag = 0
     for i in range(0,len(members_list)):
         if members_list[i]["member_id"] == member_id:
             return member_id
         else:
-            return False
+            flag += 1
+    if flag < 1:
+        return False
 
 def issue_book():
+    flag = 0
     member_id_input= int(input("Enter Your Member ID =>"))
     member_id = member_id_check(member_id_input)
     temp = 0
     temp_1 = 0
     if member_id != False:
+        print("Member Id Found")
         view_all_books()
         book_choice = input("Enter Name of the book you want to issue => ") 
         book_choice = detail_formatter(book_choice)
         for i in range(0,len(books_list)):
             if books_list[i]["book_title"] == book_choice:
                 if books_list[i]["book_available_copies"] > 0:
-                    for i in range(0,len(members_list)):
-                        if members_list[i]["member_id"] == member_id:
-                            members_list[i]["member_borrowed_books"].append(book_choice)
-                            print("Book Issue Successfully")
-                    books_list[i]["book_available_copies"] - 1
-                temp_1 = temp_1 + 1
-            if temp_1 > 1:
-                print("Book Not Available")
-            temp = temp +1
-        if temp >1 :
+                    for j in range(0,len(members_list)):
+                        if members_list[j]["member_id"] == member_id:
+                            members_list[j]["member_borrowed_books"].append(book_choice)
+                            print("Book Issued Successfully")
+                            books_list[i]["book_available_copies"] = books_list[i]["book_available_copies"] - 1
+                        else:
+                            flag += 1
+                        if flag > 1:
+                            print("Member Not Found")     
+                    temp_1 = temp_1 + 1
+                if temp_1 < 1:
+                    print("Book Not Available. Book Not Issued")
+                temp = temp +1
+        if temp < 1 :
             print("Book Not Found By Name")
-    else:
-        print("Member Id Not Found")
+        
 
 while True:
     print("1. Add New Book")
