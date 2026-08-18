@@ -97,7 +97,6 @@ def view_all_members():
         print(f"Member Borrowed Books => {members_list[i]['member_borrowed_books']}")
 
 def member_id_check(member_id):
-    flag = 0
     for i in range(0,len(members_list)):
         if members_list[i]["member_id"] == member_id:
             return member_id
