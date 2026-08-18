@@ -75,7 +75,7 @@ def search_by_title():
     else:
         print("Invalid Option")
 
-def add_new_member(member_borrowed_books = []):
+def add_new_member():
     global members_list
     global member_id_counter
     print("========== Add New Member Function==========")
@@ -121,7 +121,7 @@ def issue_book():
                             members_list[j]["member_borrowed_books"].append(book_choice)
                             print("Book Issued Successfully")
                             books_list[i]["book_available_copies"] = books_list[i]["book_available_copies"] - 1
-                            temp_1 = temp_1 + 1
+                            temp_1 += 1
                             break
                 if temp_1 < 1:
                     print("Book Not Available. Book Not Issued")
