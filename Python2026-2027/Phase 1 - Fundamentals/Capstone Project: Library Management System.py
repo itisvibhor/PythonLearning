@@ -132,14 +132,15 @@ def issue_book():
 
 """
 return_book function does the following : 
-1. takes book name as input. then formats it. ( Done )
-2.checks whether the book name is present in the all books or not. If yes then proceeds with the process else not and gives error message. ( Done )
+1. takes book name as input. then formats it.
+2.checks whether the book name is present in the all books or not. If yes then proceeds with the process else not and gives error message.
 3.then member id input is taken and is being checked whether it is an member id from the database or not. if yes then proceeds else gives an error message.
 4.then books title is removed from borrowed books list along with available copies is updated with count +1
 """
 
 def return_book():
-    flag = 0 , temp = 0
+    flag = 0 
+    temp = 0
     book_return = input("Enter the name of the book to return")
     book_return = detail_formatter(book_return) #1
     for i in range(0,len(books_list)): #2
@@ -166,6 +167,15 @@ def return_book():
     if temp < 1:
         print("Book Not Found in DataBase.")
 
+def library_stats():
+    unique_genres = set()
+    print(f"Total Books In Library = > {len(books_list)}")
+    print(f"Total Members Registered = > {len(members_list)}")
+    for i in range(0,len(books_list)):
+        unique_genres.add(books_list[i]["book_genre"])
+    print(f"Unique Genres In Library = > {unique_genres} and Total Unique are => {len(unique_genres)}")
+   
+
 while True:
     print("1. Add New Book")
     print("2. Add New Member")
@@ -174,6 +184,7 @@ while True:
     print("5. View All Books")
     print("6. View All Members")
     print("7. Search Book by Title/Genre")
+    print("8. Library Stats")
     print("9. Exit")
     choice = int(input("Enter Your Selection : 1-9 => "))
     if choice == 1:
@@ -206,6 +217,9 @@ while True:
         else:
             print("Add Some Books First and Try Again!")  
 
+    elif choice == 8:
+        library_stats()
+    
     elif choice == 9:
         break
     else:
