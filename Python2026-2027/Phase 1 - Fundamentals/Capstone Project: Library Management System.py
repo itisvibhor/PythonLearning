@@ -70,9 +70,8 @@ def search_by_title():
             if books_list[i]["book_genre"] == genre_input:
                 view_all_books(genre_input)
                 flag = flag +1
-            if flag > 1:
-                print("Book Not Found")
-        pass
+        if flag < 1:
+            print("Book Not Found")
     else:
         print("Invalid Option")
 
@@ -102,13 +101,9 @@ def member_id_check(member_id):
     for i in range(0,len(members_list)):
         if members_list[i]["member_id"] == member_id:
             return member_id
-        else:
-            flag += 1
-    if flag < 1:
-        return False
+    return False
 
 def issue_book():
-    flag = 0
     member_id_input= int(input("Enter Your Member ID =>"))
     member_id = member_id_check(member_id_input)
     temp = 0
@@ -126,16 +121,15 @@ def issue_book():
                             members_list[j]["member_borrowed_books"].append(book_choice)
                             print("Book Issued Successfully")
                             books_list[i]["book_available_copies"] = books_list[i]["book_available_copies"] - 1
-                        else:
-                            flag += 1
-                        if flag > 1:
-                            print("Member Not Found")     
-                    temp_1 = temp_1 + 1
+                            temp_1 = temp_1 + 1
+                            break
                 if temp_1 < 1:
                     print("Book Not Available. Book Not Issued")
                 temp = temp +1
         if temp < 1 :
             print("Book Not Found By Name")
+    else:
+        print(f"Member Does Not Exist / Not Found Having ID {member_id_input}")
         
 
 while True:
