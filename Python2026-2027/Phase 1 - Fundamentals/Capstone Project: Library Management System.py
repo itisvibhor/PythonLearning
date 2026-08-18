@@ -119,7 +119,7 @@ def issue_book():
                         if members_list[j]["member_id"] == member_id:
                             members_list[j]["member_borrowed_books"].append(book_choice)
                             print("Book Issued Successfully")
-                            books_list[i]["book_available_copies"] = books_list[i]["book_available_copies"] - 1
+                            books_list[i]["book_available_copies"] -= 1
                             temp_1 += 1
                             break
                 if temp_1 < 1:
@@ -128,13 +128,49 @@ def issue_book():
         if temp < 1 :
             print("Book Not Found By Name")
     else:
-        print(f"Member Does Not Exist / Not Found Having ID {member_id_input}")
-        
+        print(f"Member Does Not Exist / Not Found Having ID => {member_id_input}")
+
+"""
+return_book function does the following : 
+1. takes book name as input. then formats it. ( Done )
+2.checks whether the book name is present in the all books or not. If yes then proceeds with the process else not and gives error message. ( Done )
+3.then member id input is taken and is being checked whether it is an member id from the database or not. if yes then proceeds else gives an error message.
+4.then books title is removed from borrowed books list along with available copies is updated with count +1
+"""
+
+def return_book():
+    flag = 0 , temp = 0
+    book_return = input("Enter the name of the book to return")
+    book_return = detail_formatter(book_return) #1
+    for i in range(0,len(books_list)): #2
+        if(books_list[i]["book_title"] == book_return):
+            temp +=1
+            member_id = int(input("Enter Your Member Id"))
+            member_id = member_id_check(member_id)
+            if member_id != False:
+                for j in range(0,len(members_list)):
+                    if members_list[j]["member_id"] == member_id:
+                        for k in range(0,len(members_list[j]["member_borrowed_books"])):
+                            if members_list[j]["member_borrowed_books"][k] == book_return:
+                                print("Book Returned Successfully")
+                                members_list[j]["member_borrowed_books"].remove(book_return)      
+                                books_list[i]["book_available_copies"] += 1
+                                flag +=1
+                                break
+                        if flag < 1:
+                            print("Book Not Found In member's Borrowed Books")
+            else:
+                print("Member Id Not Found")
+                break
+
+    if temp < 1:
+        print("Book Not Found in DataBase.")
 
 while True:
     print("1. Add New Book")
     print("2. Add New Member")
     print("3. Issue Book")
+    print("4. Return a Book")
     print("5. View All Books")
     print("6. View All Members")
     print("7. Search Book by Title/Genre")
@@ -148,6 +184,9 @@ while True:
 
     elif choice == 3:
         issue_book()
+
+    elif choice == 4:
+        return_book()
 
     elif choice == 5:
         if books_list != []:
